@@ -21,6 +21,11 @@ app.use(cors({
   origin: process.env.CORS_URL
 }));
 
+app.use((req, res, next) => {
+  res.setHeader('Referrer-Policy', 'no-referrer-when-downgrade');
+  next();
+});
+
 
 //create a database connection -> u can also
 //create a separate file for this and then import/use that file here
