@@ -17,7 +17,10 @@ const commonFeatureRouter = require("./routes/common/feature-routes");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_URL
+}));
+
 
 //create a database connection -> u can also
 //create a separate file for this and then import/use that file here
