@@ -2,32 +2,30 @@ const Address = require("../../models/Address");
 
 const addAddress = async (req, res) => {
   try {
-    const {userId, address, city, pincode, phone, notes } = req.body
+    const { userId, address, city, pincode, phone, notes } = req.body;
 
-    if(!userId || !address || !city || !pincode || !phone || !notes){
+    if (!userId || !address || !city || !pincode || !phone || !notes) {
       return res.status(400).json({
         success: false,
-        message: "Invalid data provided!"
-      })
+        message: "Invalid data provided!",
+      });
     }
 
-    const newAddress = new Address({
+    const newlyCreatedAddress = new Address({
       userId,
       address,
       city,
       pincode,
+      notes,
       phone,
-      notes
-    })
+    });
 
-    await newAddress.save()
+    await newlyCreatedAddress.save();
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
-      data : newAddress,
-      message: "Address added successfully"
-    })
-
+      data: newlyCreatedAddress,
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json({
@@ -39,22 +37,20 @@ const addAddress = async (req, res) => {
 
 const fetchAllAddress = async (req, res) => {
   try {
-    const {userId} = req.params
-
-    if(!userId){
+    const { userId } = req.params;
+    if (!userId) {
       return res.status(400).json({
         success: false,
-        message: "Invalid data provided!"
-      })
+        message: "User id is required!",
+      });
     }
 
-    const address = await Address.find({userId})
+    const addressList = await Address.find({ userId });
 
     res.status(200).json({
       success: true,
-      data : address
-    })
-
+      data: addressList,
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json({
@@ -66,41 +62,36 @@ const fetchAllAddress = async (req, res) => {
 
 const editAddress = async (req, res) => {
   try {
+    const { userId, addressId } = req.params;
+    const formData = req.body;
 
-    const {userId, addressId} = req.params
-    const formData = req.body
-
-    if(!userId || !addressId){
+    if (!userId || !addressId) {
       return res.status(400).json({
         success: false,
-        message: "Invalid data provided!"
-      })
+        message: "User and address id is required!",
+      });
     }
 
     const address = await Address.findOneAndUpdate(
-      
       {
         _id: addressId,
         userId,
       },
       formData,
-      {
-        new: true,
-      }
-    )
+      { new: true }
+    );
 
-    if(!address){
+    if (!address) {
       return res.status(404).json({
         success: false,
-        message: "Address not found"
-      })
+        message: "Address not found",
+      });
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      data : address
-    })
-
+      data: address,
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json({
@@ -112,33 +103,27 @@ const editAddress = async (req, res) => {
 
 const deleteAddress = async (req, res) => {
   try {
-
-    const {userId, addressId} = req.params
-
-    if(!userId || !addressId){
+    const { userId, addressId } = req.params;
+    if (!userId || !addressId) {
       return res.status(400).json({
         success: false,
-        message: "Invalid data provided!"
-      })
+        message: "User and address id is required!",
+      });
     }
 
-    const address = await Address.findOneAndDelete({
-      _id: addressId,
-      userId,
-    })
+    const address = await Address.findOneAndDelete({ _id: addressId, userId });
 
-    if(!address){
+    if (!address) {
       return res.status(404).json({
         success: false,
-        message: "Address not found"
-      })
+        message: "Address not found",
+      });
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "Address deleted successfully"
-    })
-
+      message: "Address deleted successfully",
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json({
