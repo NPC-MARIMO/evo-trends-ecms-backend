@@ -14,32 +14,35 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
-const app = express();
-const PORT = process.env.PORT || 5000;
-
-app.use(cors({
-  origin: process.env.CORS_URL
-}));
-
-app.use((req, res, next) => {
-  res.setHeader('Referrer-Policy', 'no-referrer-when-downgrade');
-  next();
-});
-
 
 //create a database connection -> u can also
 //create a separate file for this and then import/use that file here
 
 mongoose
-.connect(process.env.MONGO_DB_URI)
-.then(() => console.log("MongoDB connected"))
-.catch((error) => console.log(error));
+  .connect("db_url")
+  .then(() => console.log("MongoDB connected"))
+  .catch((error) => console.log(error));
 
+const app = express();
+const PORT = process.env.PORT || 5000;
 
+app.use(
+  cors({
+    origin: process.env.CORS_URL,
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());
-
 app.use("/api/auth", authRouter);
 app.use("/api/admin/products", adminProductsRouter);
 app.use("/api/admin/orders", adminOrderRouter);
