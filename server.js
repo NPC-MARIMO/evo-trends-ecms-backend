@@ -14,6 +14,9 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
+const app = express();
+const PORT = process.env.PORT || 5000;
+
 app.use(cors());
 
 //create a database connection -> u can also
@@ -24,8 +27,6 @@ mongoose
 .then(() => console.log("MongoDB connected"))
 .catch((error) => console.log(error));
 
-const app = express();
-const PORT = process.env.PORT || 5000;
 
 
 app.use(cookieParser());
