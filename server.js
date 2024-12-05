@@ -27,15 +27,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: 'https://evo-trends-ecms.vercel.app', // Specific frontend URL
-  credentials: true // Allow cookies, authorization headers, etc.
+  credentials: true,              
 }));
-
-app.options('*', cors({
-  origin: 'https://evo-trends-ecms.vercel.app',
-  credentials: true
-}));
-
 
 app.use(cookieParser());
 app.use(express.json());
