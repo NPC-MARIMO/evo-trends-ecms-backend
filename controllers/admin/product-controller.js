@@ -24,6 +24,7 @@ const handleImageUpload = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const { image, title, description, category, brand, price, salePrice, totalStock } = req.body;
+    console.log(image)
     const newCreateadProduct = new Product({
       image,
       title,
