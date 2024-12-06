@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { handleImageUpload, addProduct, fetchAllProducts, editProduct, deleteProduct } = require("../../controllers/admin/product-controller")
+const { handleImageUpload, addProduct, fetchAllProducts, editProduct, deleteProduct } = require("../../controllers/admin/products-controller")
 
 const {upload} = require("../../helpers/cloudinary")
 
