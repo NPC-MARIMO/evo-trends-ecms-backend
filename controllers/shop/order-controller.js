@@ -199,9 +199,79 @@ const getOrderDetails = async (req, res) => {
   }
 };
 
+const deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const order = await Order.findByIdAndDelete(id);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found!",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Order deleted successfully!",
+      data: order,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occured!",
+    });
+  }
+};
+const returnOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the order by ID
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found!",
+      });
+    }
+
+    // Only allow return if order status is 'delivered'
+    if (order.orderStatus !== "delivered") {
+      return res.status(400).json({
+        success: false,
+        message: "Order can only be returned if it is delivered.",
+      });
+    }
+
+    // Set order status to 'return and refund'
+    order.orderStatus = "return and refund";
+    order.orderUpdateDate = new Date();
+
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Order status updated to return and refund.",
+      data: order,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occured!",
+    });
+  }
+};
+
 module.exports = {
   createOrder,
   capturePayment,
   getAllOrdersByUser,
   getOrderDetails,
+  deleteOrder,
+  returnOrder
 };
