@@ -26,9 +26,22 @@ mongoose
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+allowedOrigins = [
+  'http://localhost:5174',
+  'https://evo-trends-ecms.vercel.app'
+];
+
 app.use(cors({
-  origin: 'https://evo-trends-ecms.vercel.app', // Specific frontend URL
-  credentials: true // Allow cookies, authorization headers, etc.
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, or Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
 }));
 
 app.options('*', cors({
