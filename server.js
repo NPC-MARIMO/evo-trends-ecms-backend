@@ -27,7 +27,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 allowedOrigins = [
-  'http://localhost:5174',
+  'http://localhost:5173',
   'https://evo-trends-ecms.vercel.app'
 ];
 
