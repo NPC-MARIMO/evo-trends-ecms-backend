@@ -28,6 +28,10 @@ const OrderSchema = new mongoose.Schema({
   orderUpdateDate: Date,
   paymentId: String,
   payerId: String,
+  // Razorpay specific fields
+  razorpayOrderId: String,
+  razorpayPaymentId: String,
+  razorpaySignature: String,
 });
 
 module.exports = mongoose.model("Order", OrderSchema);
